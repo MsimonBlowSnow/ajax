@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script >
+        //模仿jquery封装ajax
+            function ajax(obj){
+                var defaults = {
+                    type : 'get',
+                    success : function (data){console.dir(data)},
+                    url : '#',
+                    data: {},
+                    async : true,
+                    dataType: 'text'
+                }
+                for(var key in obj){
+                    defaults[key] = obj[key]; 
+                }
+                var xhr =null;
+                if(window.XMLHttpRequest){
+                    xhr = new window.XMLHttpRequest();
+                }else{
+                    xhr = new ActiveXObject('Microsofe.XMLHTTP');
+                }
+                //处理get或者是post参数
+                var param = '';
+                for (var key in defaults.data){
+                    param=param+key+'='+defaults.data[key]+'&'
+                }
+                if(param!='')
+                    param = param.substring(0, param.length-1);
+
+                if(defaults.type == 'get'&&defaults.url.indexOf("?")==-1){
+                    defaults.url = defaults.url+"?"+param;
+                    param = null;
+                }else if (defaults.type == 'get'){
+                    param =null;
+                }
+
+                xhr.open(defaults.type,defaults.url,defaults.async);
+                xhr.send(encodeURI(param));
+                xhr.onreadystatechange = function (){
+                    if(xhr.readyState == 4 &&xhr.status == 200){
+                        var data = xhr.responseText;
+                        defaults.success(data);
+                    }
+                }
+            }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <script>
+            console.log(1);
+                    //先把该函数放入事件队列中，等主线程空闲在进行
+                    setTimeout(function(){
+                        console.log(2);
+                    },1000);
+                    //多重循环导致主线程长时间处于忙碌状态。
+                    for(var i = 0;i<100000;i++){};
+                    //先输出3，让主线程空闲，然后在执行事件队列里面的定时任务
+                    console.log(3);
+                    //js处理机制单线程+事件对列
+                    
+                    /*(事件触发，定时函数,ajax的回调函数可以进入事件对列）
+                    事件队列处理执行的条件
+                        1.主线程已经空闲
+                        2.任务满足执行条件
+                            1.定时函数(延迟事件已经满足)
+                            2.事件函数(事件函数被触发);
+                            3.ajax的回调函数(服务器端有事件触发)
+                    */
+        </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../jquery-1.12.2.js"></script>
+    <script>
+    $(function(){
+        $("#button1").click (function (){
+           $("#p1").load("ajaxJquery.txt"); 
+        });
+
+        $("#button12").click (function (){
+           $("#p1").load("ajaxJquery.txt #p1"); 
+        });
+
+
+    $("#button13").click(function(){ 
+        $("#div03").load("ajaxJquery.txt",function(resposeText,status,xhr){
+            if(status == "success")
+                alert(resposeText);
+            if(status == "error")
+                alert("Error:"+xhr.status+xhr.statusText);
+        });
+    });
+
+
+    $("#btn04").click(function(){
+            $.ajax({
+                url: "check.php",
+                async :true,    //一般默认是true,表示一部加载,改为false,表示同步
+                processData : false , //false表示防止自动转化数据格式
+                success: function(data){
+                   $("#ajax04").text(data);
+                }
+            });
+    });
+//加载并执行test.js
+$.ajax({
+  type: "GET",
+  url: "test.js",
+  dataType: "script"    //xml text html json jsonp 
+});
+
+$("#AjaxJqueryPost").click(function (){
+    $.ajax({
+        data: {a : "ming"},
+        dataType : "json",
+        url: "check2.php", 
+         /*
+            url 若果是使用的是get传递书籍可以使用data对象传递
+            或者使用url直接拼凑
+            而post要求使用data来传递数据
+         */
+        type : "post",//默认是get
+        success : function (data){
+            alert(data);
+        },
+        error : function (data){
+            alert(data)
+        }
+    });
+})
+
+    $("#jqueryJsonp").click(function(){
+        $.ajax({
+            type : "get",
+            url:"http://localhost:8080/AjaxKuanYu/AjaxMethodsTiaoYong",
+            dataType: "jsonp",
+            success: function (data){
+                $("#jqueryJsonpArticle").text(data);
+            }
+        })
+    })
+});
+
+    </script>
+</head>
+<body>
+    <div>
+            <p id="p1">通过jquery中的load加载为本内容 </p>
+            <button id="button1"> 加载 $("#p1").load("ajaxJquery.txt"); </button>
+            <button id="button12"> 加载 $("#p1").load("ajaxJquery.txt #p1"); (注意使用#p1中间一定要有空格)</button>
+            <hr>
+            <!--
+                    //load方法的回调函数
+            -->
+                <h1>jquery中的load方法可以加上回调函数</h1>
+                <article id = "div03">
+                    app
+                </article>
+                <button id="button13">load回调方法</button>
+                <hr>
+                <!-- ajax方法-->
+                <h1>
+                    ajax方法的使用
+                </h1>
+                <article id="ajax04"></article>
+                <button id="AjaxJqueryPost">ajax中的post</button>
+                <button id="btn04">$.ajax()方法的调用</button>
+    </div>
+    <hr>
+    <h2>jquery中jsonp跨域的使用</h2>
+    <article id="jqueryJsonpArticle">
+        mmp
+    </article>
+    <button id="jqueryJsonp">jsonp</button>
+</body>
+</html>

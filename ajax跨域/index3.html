@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../jquery-1.12.2.js"></script>
+    <script>
+        //模仿jquery中ajax的jsonp的实现原理
+        //注意jsonp不是ajax
+            function ajax(obj){
+                var defaults = {
+                    url :'#',
+                    dataType : 'jsonp',
+                    jsonp:'callback',
+                    jsonpCallback: '',
+                    data:{},
+                    success : function (data){
+                         return data;
+                    }
+                }
+                    for (var key in obj ){
+                        defaults[key] = obj[key];
+                    }
+                    //生成jsonp的函数
+                        defaults.jsonpCallback =  ("jquery"+"1.1.2" +Math.random()).replace(/\D/g,"")+((new Date()).getTime());
+                        window[defaults.jsonpCallback] = function(data){
+                            defaults.success(data);
+                        }
+                        var param = "?"+defaults.jsonp +"="+defaults.jsonpCallback;
+                    //处理jsonp的参数
+                        for(var key in defaults. data)
+                    
+            }
+    </script>
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>

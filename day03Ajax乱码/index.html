@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+        <form action="">
+            <input type="text" name = "username" >
+            <input type="password" name = "password">
+            <input type="button" id ="btn" value = "提交" >
+        </form>
+        <script>
+            var btn = document.getElementById("btn");
+            var input = document.getElementsByTagName("input");
+          
+                    btn.onclick = function (){
+                        var xml;
+                        if(window.XMLHttpRequest){
+                            xml = new XMLHttpRequest();
+                        }else{
+                            xml = new ActiveXObject("Microsoft.XMLHTTP");
+                        }
+                        xml.open("post","check.php",true);
+                        设置响应头
+                        xml.setRequestHeader ("Content-Type","application/x-www-form-urlencoded");
+                        xml.send("username="+input[0].value+"&password="+input[1].value);
+                        xml.onreadystatechange= function(){
+                                if(xml.readyState == 4){
+                                    if(xml.status == 200){
+                                        alert(xml.responseText);
+                                    }
+                                }
+                        }
+                    }
+        </script>
+        <script>
+                //ajax中open()的使用；
+                /*
+                        参数一:请求方式(get获取数据,post提交数据)
+                        参数二: 请求地址；
+                        参数三:同步或者异步，默认是true异步，false为同步
+                       
+                        xhr.onreadystatechange = function (){
+                            if(xhr.ready===4)
+                            if(xhr.status ==200){
+                                alert(xhr.responseText);
+                            }
+                        }
+                         注意:get请求
+                         如果是get请求发送一个null(有的浏览器强制规定必须为null);
+                        encodeURI()用来对中文参数进行编码，防止IEl浏览器乱码
+                       使用get返回数据，如果有中文会出现乱码，可以使用该方法处理乱码
+                            xhr.open('get','02get.php?'+encodeURI(param),ture);
+                            即使用 encodeURI(str);  //处理字符串;
+
+                           post请求：
+                            post请求参数在send里面传递，不用使用encodeURI转码，不过要设置请求头
+                            设置请求头: 
+                                            xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                */
+        </script>
+</body>
+</html>

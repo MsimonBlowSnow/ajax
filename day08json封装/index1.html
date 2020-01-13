@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+            function ajax(method,url,data,callback){
+        var param = null;
+        var xml = null;
+        if(window.XMLHttpRequest)
+            xml = new XMLHttpRequest();
+        else
+            xml = new ActiveXObject("Microsofe.XMLHTTP");
+        if(method == "GET"||method =="get"){
+                url += "?"+data;
+        }
+        xml.open(method,url,true);
+        if(method == "post"|| method == "POST"){
+             xml.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+             param =data;
+            }
+            xml.send(param);
+            xml.onreadystatechange = function (){
+                 if(xml.readyState == 4 && xml.status == 200){
+                        var getData = xml.responseText;
+                        callback(getData);
+                 }
+             }
+    }
+        </script>
+    <style>
+        #container{
+            width: 360px;
+            min-height: 100px;
+            background-color: lightgreen;
+            position: absolute;
+            top:10px;
+            left: 50%;
+            margin-left: -180px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div>
+            图书编码:<input type="text" name="code" id="code">
+            <input type="button" value="查询" id="btn">
+        </div>
+        <div id="info"></div>
+    </div>
+</body>
+    <script>
+        window.onload = function (){
+            var btn = document.getElementById("btn");
+            var  num = document.getElementById("code");
+           btn.addEventListener('click',function(){
+            ajax("get","check1.php", "name="+num.value,function (data){
+                  alert(data);
+            });
+           });
+            
+        }
+    </script>
+</html>

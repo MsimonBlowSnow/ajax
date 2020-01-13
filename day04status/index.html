@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <form action="">
+            <input type="text" name = "username">
+            <input type="password" name="password">
+            <input type="button" value = "提交" id="btn">
+        </form>
+        <script>
+            var btn = document.getElementById("btn");
+            var input = document.getElementsByTagName("input");
+            var xml;
+            btn.onclick = function (){
+                if(window.XMLHttpRequest){
+                    xml = new XMLHttpRequest
+                }else{
+                    xml = new ActiveXObject("Microsofe.XMLHTTP");
+                }
+                xml.open("post","check.php",true);
+                xml.setRequestHeader("Content-Type","application/x-www-form-urlencoded");     
+                xml.send("username="+input[0].value+"&password="+input[1].value);
+         
+                /*
+                        0 xml对象初始化完成
+                        1xml 对象调用了send
+                        2xml 收到了服务器响应的数据，数据没有解析
+                        3正在解析数据
+                        4数据解析完成
+                */
+                   //当readyState变化时候调用,不包括0到1
+                xml.onreadystatechange = function (){
+                    console.log(xml.readyState);
+                    if(xml.readyState == 4){
+                        if(xml.status == 200){
+                            /*
+                                    200 数据正常
+                                    404 没有找到请求资源
+                                    500 服务器卒错误
+                            */
+                            alert(xml.responseText);
+                        }
+                    }
+                }
+            }  
+        </script>
+</body>
+</html>

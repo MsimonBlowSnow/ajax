@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!--静态jsonp-->
+   <!--
+    <script src="http://localhost:8080/AjaxKuanYu/Ajax" type="text/javascript"></script>
+   -->
+    <!-- 
+        静态jsonp
+        加上一个async属性就得不到了，async为一部加载，在js中你使用了a,由于一部就不能得到async标签了
+        使用静态同步标签加载跨域数据时必须为
+                1.同步
+                2.而且使用跨域数据时，必序写在跨域数据后面 -->
+<!--    <script async src="http://localhost:8080/AjaxKuanYu/Ajax" type="text/javascript"></script>
+-->
+    <!-- 动态jsonp-->
+    <script>     
+      /*               动态获取script是异步的，默认就是异步的，不能修改，
+       */
+      //1.普通调用出错误，因为普通的调用script发生的是异步，不能正常使用数据          
+            var script = document.createElement('script');
+            script.src = "http://localhost:8080/AjaxKuanYu/Ajax";
+            var head = document.getElementsByTagName("head")[0];
+            head.appendChild(script);
+          //  alert(a); //异步返回数据不能够调用
+</script>
+<script>
+          //通过定义函数的方法，返回函数调用
+         //优化:2.通过返回函数调用来获取后端客户端返回的函数调用,缺点:后端调用的函数必须和
+            //前端定义的函数 名一致
+          //定义函数
+          var methods1; 
+          function foo(data){
+                console.log(data);
+                methods1 = data;
+            }
+          var script = document.createElement('script');
+            script.src = "http://localhost:8080/AjaxKuanYu/AjaxMethodsTiaoYong";
+            var head = document.getElementsByTagName("head")[0];
+            head.appendChild(script)
+    </script>
+    <script>
+        //3.优化，把函数名传给后端，使名字由前端来自定义
+        //定义函数
+        //优点1.将函数名传给后端，满足用户自定义函数名
+        var myMethods;
+        function ming(data){
+            myMethods = data;
+        }
+        var script3 = document.createElement('script');
+            script3.src = "http://localhost:8080/AjaxKuanYu/AjaxMethodsTiaoYong3?name=ming";
+            var head3 = document.getElementsByTagName("head")[0];
+            head3.appendChild(script3);
+    </script>
+</head>
+<body>
+</body>
+</html>

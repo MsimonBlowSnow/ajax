@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <form action="">
+                 <input type="button" id = "btn" value ="提交">
+        </form>
+        <table style = "display: none;">
+            <tr>
+                <th>书名</th>
+                <th>作者</th>
+                <th>描述</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+</body>
+<script>
+        var btn = document.getElementById("btn");
+        var xml;
+        btn.onclick = function (){
+            if(window.XMLHttpRequest){
+                xml = new XMLHttpRequest();
+        }else{
+                xml = new ActiveXObject ("Microsofe.XMLHTTP");
+        }
+            //xml.open("get","check.xml",true);
+         //如果是在非xml文件的其他语言里面获取xml文本必须独立设置获取格式(响应头)如php
+            xml.open("get","check.php",true);          
+            //xml.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+            //xml.send("username="+input[0].value+"&password="+input[1].value);
+            xml.send(null);
+            xml.onreadystatechange = function (){
+                if(xml.readyState == 4 && xml.status ==200){
+                   //如果是获取html,非xml，使用 responseText；
+                   var date = xml.responseXML;//获取xml
+
+                    var booklist = date.getElementsByTagName("booklist")[0];      
+                    var td = document.getElementsByTagName("td");
+                    var j=0,v=0;
+                    for(var i =0 ;i<6;i++){
+                        j=Math.floor(i/3);
+                        v=i%3;
+                        td[i].innerText =booklist.children[j].children[v].innerHTML;
+                        document.getElementsByTagName("table")[0].style.display = "block";
+                    }
+                }
+            }
+        }
+        /*1.xml数据格式:
+                    元数据:描述数据的数据
+                    弊端:xml数据的效率不高，解析也不太方便
+            2.json的数据格式
+         */           
+</script>
+</html>

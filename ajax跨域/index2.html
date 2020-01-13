@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../jquery-1.12.2.js"></script>
+    <script>
+
+        /*
+            jquery内部会支持jsonp的传递，不过
+            
+            注意:jquery使用jsonp时,默认会生成一个函数,并把这个函数名传递给后端。函数的键为callback,值为函数名
+        */
+        $(function(){
+            $("#jqueryJsonp").click(function(){
+                $.ajax({
+                 type : "get",
+                url:"http://localhost:8080/AjaxKuanYu/AjaxMethodsTiaoYong",
+                dataType: "jsonp",
+                data: {},
+                success: function (data){
+                $("#jqueryJsonpArticle").text(data);
+                },
+                error : function(){
+                    alert(1);
+                }
+        })
+    })
+
+    $("#jqueryJsonp1").click(function(){
+                $.ajax({
+                 type : "get",
+                url:"http://localhost:8080/AjaxKuanYu/AjaxMethodsTiaoYong1",
+                dataType: "jsonp",
+                data: {},
+                jsonp: 'cd',    //用于控制键，若果没有设置,jquery会默认设置callback,设置了，就是设置的值
+                jsonpCallback: 'ming',//控制回调函数接口的名，给函数由jquery默认定义了，不用自己定义。
+                success: function (data){
+                $("#jqueryJsonpArticle1").text(data);
+                },
+                error : function(){
+                    alert(1);
+                }
+        })
+    })
+ });
+         
+
+    </script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="jqueryJsonp">
+    <div id="jqueryJsonpArticle" style="border:  1px black solid; width: 100%; height: 100px;"></div>
+</div>
+
+<div id="jqueryJsonp1">
+    <div id="jqueryJsonpArticle1" style="border:  1px black solid; width: 100%; height: 100px;"></div>
+</div>
+</body>
+</html>

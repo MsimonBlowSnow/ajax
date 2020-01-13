@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" value="提交" id = "btn">
+    <span id="myspan"></span>
+        <script>
+                //json 
+                //json和js对象的区别：
+                    /*1;json数据没有变量，并且json结尾没有分号(;)
+                        2json中的数据键必须用""包住
+                        例如1.json
+                    */
+                var json ='{"name" :" ming","age" : 12,"lover" : "playgame"}';
+               //把字符串转会为对象
+                var a = JSON.parse(json);
+                var d = eval("("+json+") ");
+                //安全隐患语句注入
+                //把字对象化为字符串
+                var c = JSON.stringify(a);
+                document.getElementById ("btn").onclick = function (){
+                    var xml ;
+                    if(window.XMLHttpRequest){
+                        xml = new XMLHttpRequest();
+                    }else{
+                        xml =new ActiveXObject("Microsofe.XMLHTTP");
+                    }
+                    xml.open("get","check.php",true);
+                    xml.send(null);
+                    console.log(1);
+                    xml.onreadystatechange = function (){
+                        if(xml.readyState == 4 && xml.status == 200){
+                            //获取json或者是非xml数据
+                            var text = xml.responseText;
+                            console.log(xml.responseText);
+                            //JSON.parse(); //将字符串转化为json。
+                            var obj = JSON.parse(text);
+                            document.getElementById("myspan").innerText ="姓名"+ obj.name+"&年龄"+obj.age+"&爱好"+obj.lover;
+                        }
+                    }
+                    //相执下面语句，然后执行事件队列里面的onreadystatechange
+                    var j=0;
+                    for(var i=0;i<1000000000;i++){
+                        j++;
+                    };
+                    console.log(j);
+            }
+        </script>
+</body>
+</html>

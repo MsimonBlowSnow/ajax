@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <form action="index.php" method="get">
+                    <input type="username"><br>
+                    <input type="password"><span id ="messSpan"></span><br>
+                    <input type="button" value= "提交" id="btn" onclick="return false" >                
+        </form>
+</body>
+    <script>
+            var btn = document.getElementById("btn");
+            btn.onclick = function (){
+                //使用ajax发送请求
+                //创建ajax对象不能用于ie7以下
+                var xhr = new XMLHttpRequest();
+                var input = document.getElementsByTagName("input");
+                //准备发送
+                xhr.open("get","index.php?username="+input[0].value+"&password="+input[1].value,true);
+                //发送
+                xhr.send();
+                //当readState改变时，触发。
+                xhr.onreadystatechange = function (){
+                    if(xhr.status===200 && xhr.readyState === 4){
+                        var data = xhr.responseText;
+                        if(data == 1){
+                            document.getElementById("messSpan").innerText = "登入成功";
+                        }else{
+                            document.getElementById("messSpan").innerText = "登入失败";
+                        }
+                    }
+                }
+            }
+    </script>
+</html>
