@@ -16,21 +16,26 @@
                     jsonpCallback: '',
                     data:{},
                     success : function (data){
-                         return data;
+                        alert(data)
                     }
                 }
                     for (var key in obj ){
                         defaults[key] = obj[key];
                     }
                     //生成jsonp的函数
-                        defaults.jsonpCallback =  ("jquery"+"1.1.2" +Math.random()).replace(/\D/g,"")+((new Date()).getTime());
+                        defaults.jsonpCallback =  "jquery"+("1.1.2" +Math.random()).replace(/\D/g,"")+((new Date()).getTime());
                         window[defaults.jsonpCallback] = function(data){
                             defaults.success(data);
                         }
                         var param = "?"+defaults.jsonp +"="+defaults.jsonpCallback;
                     //处理jsonp的参数
-                        for(var key in defaults. data)
-                    
+                        for(var key in defaults. data){
+                            param = +param+'&'+defaults[key];
+                        }
+                    var script = document.createElement('script');
+                    script.src = defaults.url+param;
+                    var head = document.getElementsByTagName('head')[0];
+                    head.appendChild(script);
             }
     </script>
     <title>Document</title>

@@ -34,13 +34,16 @@
                     param = param.substring(0, param.length-1);
 
                 if(defaults.type == 'get'&&defaults.url.indexOf("?")==-1){
-                    defaults.url = defaults.url+"?"+param;
+                    if(param)
+                        defaults.url = defaults.url+"?"+param;
                     param = null;
-                }else if (defaults.type == 'get'){
-                    param =null;
+                    xhr.open(defaults.type,defaults.url,defaults.async);
+               
+                }else if (defaults.type == 'post'){
+                    param = defaults.data;
+                    xhr.open(defaults.type,defaults.url,defaults.async);
+                    xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
                 }
-
-                xhr.open(defaults.type,defaults.url,defaults.async);
                 xhr.send(encodeURI(param));
                 xhr.onreadystatechange = function (){
                     if(xhr.readyState == 4 &&xhr.status == 200){

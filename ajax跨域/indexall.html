@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function ajax(obj){
+            var defaults = {
+                url :'',
+                data: {},
+                dataType: 'html',
+                type: 'get',
+                async: true,
+                success: function (data){
+                    alert(data);
+                }
+            }
+            for(var key in obj){
+                    defaults[key]=obj[key];
+            }
+            var param = '';
+            if(JSON.stringify(defaults.data) != '{}'){
+                for (var key in defaults.data){
+                    param+=key+'='+defaults.data[key]+'&';    
+                }
+            }
+            if(param!='')
+                    param = param.substring(0, param.length-1);
+            if(defaults['dataType'] == 'jsonp'){
+                //生成jsonp的函数
+                defaults.jsonpCallback =  "jquery"+("1.1.2" +Math.random()).replace(/\D/g,"")+((new Date()).getTime());
+                        window[defaults.jsonpCallback] = function(data){
+                            defaults.success(data);
+                        }
+                     param += "&"+defaults.jsonp +"="+defaults.jsonpCallback;
+                    var script = document.createElement('script');
+                    script.src = defaults.url+'?'+param;
+                    var head = document.getElementsByTagName('head')[0];
+                    head.appendChild(script);
+            }else{
+                var xhr =null;
+                if(window.XMLHttpRequest){
+                    xhr = new window.XMLHttpRequest();
+                }else{
+                    xhr = new ActiveXObject('Microsofe.XMLHTTP');
+                }
+                if(defaults.type == 'get'&&defaults.url.indexOf("?")==-1){
+                    if(param)
+                        defaults.url = defaults.url+'?'+param;
+                    param = null;
+                    xhr.open(defaults.type,defaults.url,defaults.async);
+                    
+                }else if(defaults.type == 'post'){
+                    xhr.open(defaults.type,defaults.url,defaults.async);
+                    xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                }
+                xhr.send(encodeURI(param));
+                xhr.onreadystatechange = function (){
+                    if(xhr.readyState == 4 &&xhr.status == 200){
+                        var data = xhr.responseText;
+                        defaults.success(data);
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
